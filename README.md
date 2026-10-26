@@ -27,6 +27,6 @@ A single-page site in plain HTML and CSS, with no build step. It's modeled on si
 
 To update the site, edit the files and upload or push again.
 
-## Optional: custom domain (like ethankemp.com)
+## Optional: custom domain
 
 Buy a domain and enter it under **Settings → Pages → Custom domain**. Then follow GitHub's DNS instructions, which use four `A` records pointing to GitHub's IPs plus a `CNAME` for `www`.
