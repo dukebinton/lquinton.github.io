@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke Quinton</title>
+  <meta name="description" content="Luke Quinton — PhD student in philosophy at Rutgers (New Brunswick), working on philosophy of mind and its intersections with cognitive science, language, and social philosophy.">
+
+  <!-- Link previews (iMessage, Slack, email, social media). og:url and og:image need
+       the site's full address; update both if it isn't www.lukequinton.net. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Luke Quinton">
+  <meta property="og:description" content="PhD student in philosophy at Rutgers (New Brunswick), working on philosophy of mind, cognitive science, language, and social philosophy.">
+  <meta property="og:url" content="https://www.lukequinton.net/">
+  <meta property="og:image" content="https://www.lukequinton.net/images/me.jpg">
+  <meta property="og:image:alt" content="Photo of Luke Quinton">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Apply the saved theme before the page draws, so it doesn't flash light first
+    // New visitors start in dark mode
+    let theme = 'dark';
+    try {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') theme = saved;
+    } catch (e) {}
+    if (theme !== 'light') document.documentElement.dataset.theme = theme;
+  </script>
+</head>
+<body>
+
+<button class="theme-toggle" type="button">
+  <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.5"/>
+    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+  </svg>
+  <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>
+  </svg>
+</button>
+<script>
+  // Each click switches between dark and light mode
+  (() => {
+    const modes = ['dark', 'light'];
+    const names = { light: 'Light mode', dark: 'Dark mode' };
+    const root = document.documentElement;
+    const button = document.querySelector('.theme-toggle');
+    const current = () => root.dataset.theme || 'light';
+    const label = () => {
+      const next = modes[(modes.indexOf(current()) + 1) % modes.length];
+      button.title = `${names[current()]} (click for ${names[next].toLowerCase()})`;
+      button.setAttribute('aria-label', button.title);
+    };
+    let fadeTimer;
+    button.addEventListener('click', () => {
+      const next = modes[(modes.indexOf(current()) + 1) % modes.length];
+      // Turn on color fading just for this switch (see .theme-fading in style.css)
+      root.classList.add('theme-fading');
+      clearTimeout(fadeTimer);
+      fadeTimer = setTimeout(() => root.classList.remove('theme-fading'), 500);
+      if (next === 'light') delete root.dataset.theme; else root.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      label();
+    });
+    label();
+  })();
+</script>
+
+<header>
+  <h1>Luke Quinton</h1>
+  <p class="links">
+    luke.quinton [at] rutgers [dot] edu
+    <span class="icon-links">
+      <a href="https://philpeople.org/profiles/luke-quinton" aria-label="PhilPeople profile" title="PhilPeople">
+        <img src="images/philpeople.png" alt="">
+      </a>
+      <a href="https://bsky.app/profile/duke-binton.bsky.social" aria-label="Bluesky profile" title="Bluesky">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+        </svg>
+      </a>
+    </span>
+  </p>
+  <nav class="links">
+    <a href="#research">Research</a> ·
+    <a href="#teaching">Teaching &amp; Leadership</a> ·
+    <a href="#talks">Talks</a>
+  </nav>
+</header>
+
+<main>
+
+  <section id="about">
+    <!-- Save your photo as images/me.jpg; it's hidden automatically until then -->
+    <img class="portrait" src="images/me.jpg" alt="Photo of Luke Quinton" onerror="this.remove()">
+    <p>
+      I'm a PhD student in the philosophy department at
+      <a href="https://philosophy.rutgers.edu/">Rutgers (New Brunswick)</a>.
+      Before coming to Rutgers, I graduated with an MA (2024) and BA (2022) in philosophy from
+      <a href="https://philosophy.sfsu.edu/">San Francisco State University</a>.
+      My primary research interests are in the philosophy of mind and its intersections with
+      cognitive science, language, and social philosophy.
+    </p>
+    <p>
+      When I'm not thinking about thinking, I aim for a normal distribution
+      <a href="https://letterboxd.com/dukebinton/">on Letterboxd</a> and try to keep a streak in
+      <a href="https://www.sports-reference.com/immaculate-grid/basketball/mens">the NBA immaculate grid</a>.
+      In a previous life, I received a certificate in audio engineering from the
+      <a href="https://www.mi.edu/">Musician's Institute</a>. I'm also a participant in
+      <a href="https://www.talkpopc.org/about">talkPOPc</a>, which organizes public-facing events
+      about topics in philosophy and aesthetics.
+    </p>
+  </section>
+
+  <section id="research">
+    <details class="fold">
+      <summary><h2>Research</h2><span class="fold-icon" aria-hidden="true"></span></summary>
+      <p>
+        A through line of my research is the relation between perception and concepts. In particular,
+        I'm interested in the nature of concepts and conceptual knowledge, the mental processes in which
+        concepts are deployed, and how we use concepts to coordinate with one
+        another. I'm particularly interested in finding inroads between psychological and ability-based
+        theories of concepts, and tend to look for insights from the phenomenological (especially
+        Heidegger) and Sellarsian traditions.
+      </p>
+      <p>
+        At a more general level, my research interests have two "strands". One strand starts by
+        examining the resources the mind has at its disposal (e.g. concepts, attention, mental
+        representation, memory) and considering how these resources bear on higher-order
+        normatively-laden topics (e.g. competence, shared understanding, responsibility, justification).
+        Another strand starts by observing some broadly social phenomena (e.g. coercion, identity,
+        virtue) and trying to understand how best to frame these phenomena in terms internal to the
+        mind (e.g. dispositions, belief fragmentation, mental transitions, perceptual skill).
+      </p>
+
+      <h3>Works in progress</h3>
+      <p class="note">Please reach out if you're interested in reading or discussing drafts.</p>
+      <ul class="works">
+        <li>A paper on perceptual concepts</li>
+        <li>A paper on concepts and the common ground</li>
+        <li>A paper on the perception-cognition border</li>
+        <li>A paper on the structure of mental files</li>
+        <li>A paper on unintentionally coercive threats</li>
+      </ul>
+    </details>
+  </section>
+
+  <section id="teaching">
+    <details class="fold">
+      <summary><h2>Teaching &amp; Leadership</h2><span class="fold-icon" aria-hidden="true"></span></summary>
+
+      <h3>Teaching</h3>
+      <p class="note">* means assistant instructor; ** means primary instructor</p>
+      <ul class="dated">
+        <li><span class="date">2024</span>
+          <ul class="courses">
+            <li>Individual Morality and Social Justice* <span class="where">Fall · UC Berkeley</span></li>
+          </ul>
+        </li>
+        <li><span class="date">2023</span>
+          <ul class="courses">
+            <li>Ethics Bowl* <span class="where">Fall · San Francisco State</span></li>
+            <li>Critical Thinking** <span class="where">Spring · San Francisco State</span></li>
+          </ul>
+        </li>
+        <li><span class="date">2022</span>
+          <ul class="courses">
+            <li>Ethics in Medicine* <span class="where">Fall · San Francisco State</span></li>
+            <li>Critical Thinking* <span class="where">Fall · San Francisco State</span></li>
+            <li>Introduction to Philosophy* <span class="where">Fall · San Francisco State</span></li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Leadership</h3>
+      <ul>
+        <li>
+          In spring 2024 and 2025, I was a chapter co-director for
+          <a href="https://corrupttheyouth.org/">Corrupt the Youth</a> at Oakland Technical High School
+          in Oakland, CA, alongside Dill Malner and Georgia Cutter (2024) and Hannah DeBrine (2025).
+        </li>
+        <li>
+          In fall 2023, I co-led an undergraduate ethics bowl class at SFSU with
+          <a href="https://www.macysalzberger.com/">Macy Salzberger</a> and prepared the students for
+          an intercollegiate competition at Cal Poly SLO.
+        </li>
+        <li>
+          From 2022–2024, I ran the Philosophy and Minorities and Philosophy (MAP) clubs at SFSU with
+          Asia Baclay and Sean Sliger (alongside many others).
+        </li>
+      </ul>
+    </details>
+  </section>
+
+  <section id="talks">
+    <details class="fold">
+      <summary><h2>Talks &amp; Handouts</h2><span class="fold-icon" aria-hidden="true"></span></summary>
+      <p class="note">Handouts available upon request.</p>
+      <ul class="dated">
+        <li><span class="date">Feb 2027</span> "Pointers, Concept Possession, and Perceptual Parroting" — APA Pacific 2027</li>
+        <li><span class="date">Nov 2025</span> "Hermeneutic Coercion" — UMass Amherst Graduate Conference</li>
+      </ul>
+    </details>
+  </section>
+
+</main>
+
+<footer>
+  <p>© Luke Quinton 2026</p>
+</footer>
+
+<script>
+  // Header links (#research, #teaching, #talks) unfold the section they point to
+  document.querySelectorAll('header a[href^="#"]').forEach(a => a.addEventListener('click', () => {
+    const fold = document.querySelector(a.getAttribute('href') + ' .fold');
+    if (fold) fold.open = true;
+  }));
+  // Always start with every section folded, even if the address ends in #talks etc.
+  if (location.hash) history.replaceState(null, '', location.pathname);
+</script>
+
+</body>
+</html>

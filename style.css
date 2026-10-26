@@ -1,0 +1,169 @@
+/* A small, readable single-column style. Edit the variables to change the look. */
+
+:root {
+  --text: #222;
+  --muted: #666;
+  --bg: #fdfdfb;
+  --link: #1a4f8b;
+  --rule: #ddd;
+  --font: Georgia, "Times New Roman", serif;
+  color-scheme: light;
+}
+
+/* Dark mode (data-theme="dark" on <html>) */
+:root[data-theme="dark"] {
+  --text: #e6e6e6;
+  --muted: #9a9a9a;
+  --bg: #1b1b1b;
+  --link: #8bb8ec;
+  --rule: #3a3a3a;
+  color-scheme: dark;
+}
+
+.theme-toggle {
+  position: absolute; top: 1rem; right: 1rem;   /* scrolls away with the page instead of covering content */
+  width: 2.5rem; height: 2.5rem;
+  display: grid; place-items: center;
+  padding: 0; border: 1px solid var(--rule); border-radius: 50%;
+  background: var(--bg); color: var(--text);
+  cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--muted); }
+/* The icon shows the current mode: sun (light) or moon (dark).
+   Both sit on top of each other; the current one spins and fades in, the old one out. */
+.theme-toggle { overflow: hidden; }
+.theme-toggle svg {
+  grid-area: 1 / 1;
+  width: 1.2rem; height: 1.2rem;
+  opacity: 0; transform: rotate(-90deg) scale(0.4);
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+:root:not([data-theme]) .theme-toggle .sun,
+:root[data-theme="dark"] .theme-toggle .moon { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle svg { transition: opacity 0.2s; transform: none; }
+}
+
+/* While switching modes, fade every color instead of snapping. The script adds
+   .theme-fading for half a second only, so hover effects stay instant otherwise.
+   Only elements that set their own colors are listed: everything else (including the
+   icons' lines) simply inherits the fading color. Giving inherited elements their own
+   fade too makes them lag behind their parent and stutter. */
+:root.theme-fading :is(body, a, .links, .note, .works .venue, .works summary,
+                       .dated .date, .courses .where, footer, .theme-toggle) {
+  transition: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease !important;
+}
+:root.theme-fading :is(.fold > summary, .fold-icon) {
+  transition: border-color 0.4s ease, transform 0.3s ease !important;
+}
+:root.theme-fading .fold-icon::before,
+:root.theme-fading .fold-icon::after {
+  transition: background-color 0.4s ease, transform 0.3s ease !important;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 3rem 1rem 4rem;
+  font-family: var(--font);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1 { font-size: 2rem; font-weight: normal; margin: 0 0 0.25rem; }
+h2 {
+  font-size: 1.25rem;
+  font-weight: normal;
+  margin: 2.5rem 0 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+h3 { font-size: 1rem; font-style: italic; font-weight: normal; margin: 1.25rem 0 0.5rem; }
+
+.links { color: var(--muted); margin: 0; }
+nav.links { margin-top: 0.3rem; }
+
+/* Profile icons (PhilPeople, Bluesky) next to the email */
+.icon-links { display: inline-flex; gap: 0.5rem; vertical-align: -0.15em; margin-left: 0.3rem; }
+.icon-links a { color: var(--muted); display: inline-flex; }
+.icon-links a:hover { color: var(--link); }
+.icon-links svg, .icon-links img { width: 1.05em; height: 1.05em; }
+/* PhilPeople logo: grey like the other icons, full color on hover */
+.icon-links img { border-radius: 2px; filter: grayscale(1); opacity: 0.6; transition: filter 0.2s, opacity 0.2s; }
+.icon-links a:hover img, .icon-links a:focus-visible img { filter: none; opacity: 1; }
+
+.portrait {
+  float: right;
+  width: 200px;
+  margin: 1.4em 0 1rem 1.5rem;   /* top margin lines it up with the first line of the bio */
+  border-radius: 4px;
+}
+#about { overflow: auto; margin-top: 2rem; }
+
+ul { padding-left: 1.2rem; }
+li { margin-bottom: 0.6rem; }
+
+.works .venue { display: block; color: var(--muted); font-size: 0.95rem; }
+
+/* Small "Abstract" toggles under a paper */
+.works details { font-size: 0.95rem; margin-top: 0.2rem; }
+.works summary { cursor: pointer; color: var(--muted); }
+.works details p { margin: 0.4rem 0 0; }
+
+/* Fold-down sections: click the heading to show or hide the contents */
+.fold > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 2.5rem 0 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary h2 { margin: 0; padding: 0; border: 0; }
+.fold-icon {
+  position: relative; flex: none;
+  width: 1.5rem; height: 1.5rem;
+  border: 1px solid var(--rule); border-radius: 50%;
+  transition: transform 0.3s ease, border-color 0.2s;
+}
+/* Two bars make a plus; when open, the vertical bar turns flat to make a minus */
+.fold-icon::before, .fold-icon::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  width: 0.65rem; height: 1.5px; margin: -0.75px 0 0 -0.325rem;
+  background: var(--muted); border-radius: 1px;
+  transition: transform 0.3s ease, background 0.2s;
+}
+.fold-icon::after { transform: rotate(90deg); }
+.fold[open] .fold-icon { transform: rotate(180deg); }
+.fold[open] .fold-icon::after { transform: rotate(0deg); }
+.fold > summary:hover .fold-icon { border-color: var(--link); }
+.fold > summary:hover .fold-icon::before,
+.fold > summary:hover .fold-icon::after { background: var(--link); }
+.fold > summary:hover h2 { color: var(--link); }
+
+.note { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.5rem; }
+
+.dated { list-style: none; padding: 0; }
+.dated > li { display: flex; gap: 1rem; }
+.dated .date { flex: 0 0 6.5rem; color: var(--muted); }
+
+/* Courses grouped under a year in the Teaching list */
+.courses { list-style: none; padding: 0; margin: 0; }
+.courses li { margin-bottom: 0.35rem; }
+.courses .where { color: var(--muted); font-size: 0.9rem; margin-left: 0.35rem; white-space: nowrap; }
+
+footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 520px) {
+  .portrait { float: none; display: block; margin: 0 0 1rem; }
+  .dated > li { display: block; }
+  .dated .date { display: block; }
+}
