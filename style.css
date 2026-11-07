@@ -106,7 +106,7 @@ nav.links { margin-top: 0.3rem; }
 
 /* Intro: name, links and bio in the left column; photo in the right column.
    The photo fills the full height of the left column (cropped to fit, not stretched). */
-.intro { display: grid; grid-template-columns: 1fr 230px; gap: 2rem; }
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 2rem; }
 .intro #about p:last-child { margin-bottom: 0; }
 /* Insets line the photo up with the top of the name's letters and the last line of the bio */
 .portrait-frame { position: relative; margin: 0.75em 0 0.45em; }
@@ -179,7 +179,7 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
    the drawing sits directly on the page color. */
 .name-row { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 0.25rem; }
 .name-row h1 { margin: 0; line-height: 1.1; }   /* name is split over two lines */
-.eye { display: grid; flex: none; width: 190px; }
+.eye { display: grid; flex: 0 1 190px; min-width: 100px; }   /* shrinks a little if space is tight */
 .eye img {
   grid-area: 1 / 1; width: 100%; height: auto;
   clip-path: inset(2px);   /* trims a light hairline at the dark file's edges */
@@ -190,11 +190,15 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
 :root[data-theme="dark"] .eye-light { opacity: 0; }
 :root[data-theme="dark"] .eye-dark { opacity: 1; }
 
-@media (max-width: 520px) {
-  .eye { width: 150px; }
-  /* On phones, one column: the photo goes under the bio at a fixed size */
+/* Below about 680px the two intro columns don't fit side by side,
+   so the photo moves under the bio at a fixed size */
+@media (max-width: 680px) {
   .intro { grid-template-columns: 1fr; gap: 1.5rem; }
   .portrait-frame { width: 200px; aspect-ratio: 4 / 5; }
+}
+
+@media (max-width: 520px) {
+  .eye { flex-basis: 150px; }
   .dated > li { display: block; }
   .dated .date { display: block; }
 }
