@@ -49,6 +49,7 @@
    Only elements that set their own colors are listed: everything else (including the
    icons' lines) simply inherits the fading color. Giving inherited elements their own
    fade too makes them lag behind their parent and stutter. */
+:root.theme-fading,
 :root.theme-fading :is(body, a, .links, .note, .works .venue, .works summary,
                        .dated .date, .courses .where, footer, .theme-toggle) {
   transition: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease !important;
@@ -62,6 +63,10 @@
 }
 
 * { box-sizing: border-box; }
+
+/* The whole window's background, including the margins either side of the column.
+   Set here directly (not borrowed from body) so it fades with everything else. */
+html { background: var(--bg); }
 
 body {
   max-width: 44rem;
@@ -99,13 +104,20 @@ nav.links { margin-top: 0.3rem; }
 .icon-links img { border-radius: 2px; filter: grayscale(1); opacity: 0.6; transition: filter 0.2s, opacity 0.2s; }
 .icon-links a:hover img, .icon-links a:focus-visible img { filter: none; opacity: 1; }
 
+/* Intro: name, links and bio in the left column; photo in the right column.
+   The photo fills the full height of the left column (cropped to fit, not stretched). */
+.intro { display: grid; grid-template-columns: 1fr 230px; gap: 2rem; }
+.intro #about p:last-child { margin-bottom: 0; }
+/* Insets line the photo up with the top of the name's letters and the last line of the bio */
+.portrait-frame { position: relative; margin: 0.75em 0 0.45em; }
 .portrait {
-  float: right;
-  width: 200px;
-  margin: 1.4em 0 1rem 1.5rem;   /* top margin lines it up with the first line of the bio */
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 30%;   /* keep the face in view when cropped */
   border-radius: 4px;
 }
-#about { overflow: auto; margin-top: 2rem; }
+.portrait:hover { filter: none; }
+#about { margin-top: 2rem; }
 
 ul { padding-left: 1.2rem; }
 li { margin-bottom: 0.6rem; }
@@ -162,8 +174,27 @@ li { margin-bottom: 0.6rem; }
 
 footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
 
+/* Eye drawing on the same line as the name. Both versions sit in the same spot;
+   the one for the current mode fades in. The blend modes drop each file's white/black backdrop so
+   the drawing sits directly on the page color. */
+.name-row { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 0.25rem; }
+.name-row h1 { margin: 0; line-height: 1.1; }   /* name is split over two lines */
+.eye { display: grid; flex: none; width: 190px; }
+.eye img {
+  grid-area: 1 / 1; width: 100%; height: auto;
+  clip-path: inset(2px);   /* trims a light hairline at the dark file's edges */
+  transition: opacity 0.4s ease;
+}
+.eye-light { mix-blend-mode: darken; }
+.eye-dark { mix-blend-mode: lighten; opacity: 0; }
+:root[data-theme="dark"] .eye-light { opacity: 0; }
+:root[data-theme="dark"] .eye-dark { opacity: 1; }
+
 @media (max-width: 520px) {
-  .portrait { float: none; display: block; margin: 0 0 1rem; }
+  .eye { width: 150px; }
+  /* On phones, one column: the photo goes under the bio at a fixed size */
+  .intro { grid-template-columns: 1fr; gap: 1.5rem; }
+  .portrait-frame { width: 200px; aspect-ratio: 4 / 5; }
   .dated > li { display: block; }
   .dated .date { display: block; }
 }
