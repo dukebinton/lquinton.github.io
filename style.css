@@ -29,6 +29,7 @@
   cursor: pointer;
 }
 .theme-toggle:hover { border-color: var(--muted); }
+.theme-toggle-inline { display: none; }   /* phone-only copy in the icon row (see the 600px rules) */
 /* The icon shows the current mode: sun (light) or moon (dark).
    Both sit on top of each other; the current one spins and fades in, the old one out. */
 .theme-toggle { overflow: hidden; }
@@ -106,17 +107,15 @@ nav.links { margin-top: 0.3rem; }
 
 /* Intro: name, links and bio in the left column; photo in the right column.
    The photo fills the full height of the left column (cropped to fit, not stretched). */
-.intro { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 2rem; }
+/* Intro: the header (name, email row, links) on the left with the eye drawing beside it;
+   the bio runs the full width underneath. */
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 2rem; }
+.intro-text { display: contents; }   /* lets the header and bio sit directly in the grid */
+.intro header { grid-column: 1; grid-row: 1; }
+.intro .eye { grid-column: 2; grid-row: 1; align-self: start; margin-top: 0.4em; }
+.intro #about { grid-column: 1 / -1; grid-row: 2; }
+.intro #about p:first-child { margin-top: 0; }   /* keeps the usual gap between header and bio */
 .intro #about p:last-child { margin-bottom: 0; }
-/* Insets line the photo up with the top of the name's letters and the last line of the bio */
-.portrait-frame { position: relative; margin: 0.75em 0 0.45em; }
-.portrait {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 30%;   /* keep the face in view when cropped */
-  border-radius: 4px;
-}
-.portrait:hover { filter: none; }
 #about { margin-top: 2rem; }
 
 ul { padding-left: 1.2rem; }
@@ -178,8 +177,8 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
    the one for the current mode fades in. The blend modes drop each file's white/black backdrop so
    the drawing sits directly on the page color. */
 .name-row { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 0.25rem; }
-.name-row h1 { margin: 0; line-height: 1.1; }   /* name is split over two lines */
-.eye { display: grid; flex: 0 1 190px; min-width: 100px; }   /* shrinks a little if space is tight */
+.name-row h1 { margin: 0; line-height: 1.1; }
+.eye { display: grid; width: 200px; }
 .eye img {
   grid-area: 1 / 1; width: 100%; height: auto;
   clip-path: inset(2px);   /* trims a light hairline at the dark file's edges */
@@ -190,15 +189,41 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
 :root[data-theme="dark"] .eye-light { opacity: 0; }
 :root[data-theme="dark"] .eye-dark { opacity: 1; }
 
-/* Below about 680px the two intro columns don't fit side by side,
-   so the photo moves under the bio at a fixed size */
-@media (max-width: 680px) {
-  .intro { grid-template-columns: 1fr; gap: 1.5rem; }
-  .portrait-frame { width: 200px; aspect-ratio: 4 / 5; }
+/* When the window is narrow enough that the column reaches the light/dark button in the
+   corner, add room at the top so the button and the drawing don't touch */
+@media (max-width: 820px) {
+  body { padding-top: 4.5rem; }
+}
+
+/* Narrow windows and phones: no room beside the header, so the drawing goes under it,
+   above the bio */
+@media (max-width: 600px) {
+  /* Phones: a smaller drawing on the same line as the name; the email row and links
+     run full width underneath */
+  .intro { grid-template-columns: minmax(0, 1fr) auto; column-gap: 1rem; }
+  .intro header, .intro .header-text { display: contents; }
+  .intro .name-row { grid-column: 1; grid-row: 1; }
+  .intro .eye { grid-column: 2; grid-row: 1; align-self: center; width: 110px; margin: 0; }
+  .intro p.links { grid-column: 1 / -1; grid-row: 2; }
+  .intro nav.links { grid-column: 1 / -1; grid-row: 3; }
+  .intro #about { grid-column: 1 / -1; grid-row: 4; }
+
+  /* The light/dark button moves from the corner into the icon row, so the top
+     doesn't need extra room */
+  body { padding-top: 3rem; }
+  .theme-toggle:not(.theme-toggle-inline) { display: none; }
+  .theme-toggle-inline {
+    position: static;   /* sits in the row, not in the corner like the big button */
+    display: inline-grid; font-size: inherit;
+    width: 1.05em; height: 1.05em;
+    border: 0; border-radius: 0; background: none;
+    color: var(--muted);
+  }
+  .theme-toggle-inline:hover { color: var(--link); }
+  .theme-toggle-inline svg { width: 100%; height: 100%; }
 }
 
 @media (max-width: 520px) {
-  .eye { flex-basis: 150px; }
   .dated > li { display: block; }
   .dated .date { display: block; }
 }
