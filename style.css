@@ -64,7 +64,7 @@
    icons' lines) simply inherits the fading color. Giving inherited elements their own
    fade too makes them lag behind their parent and stutter. */
 :root.theme-fading,
-:root.theme-fading :is(body, a, .links, .note, .works .venue, .works summary,
+:root.theme-fading :is(body, a, .links, .note,
                        .dated .date, .courses .where, footer, .theme-toggle) {
   transition: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease !important;
 }
@@ -136,12 +136,7 @@ nav.links { margin-top: 0.3rem; }
 ul { padding-left: 1.2rem; }
 li { margin-bottom: 0.6rem; }
 
-.works .venue { display: block; color: var(--muted); font-size: 0.95rem; }
 
-/* Small "Abstract" toggles under a paper */
-.works details { font-size: 0.95rem; margin-top: 0.2rem; }
-.works summary { cursor: pointer; color: var(--muted); }
-.works details p { margin: 0.4rem 0 0; }
 
 /* Fold-down sections: click the heading to show or hide the contents */
 .fold > summary {
@@ -154,8 +149,9 @@ li { margin-bottom: 0.6rem; }
 .fold > summary::-webkit-details-marker { display: none; }
 /* Contents of a section (wrapped by the script so they can roll open and closed). Keeping the
    first and last margins inside means the height doesn't jump at the end of the animation. */
-.fold-body { display: flow-root; padding-top: 0.4rem; }   /* padding keeps the usual gap under the heading */
-.fold-body > :first-child { margin-top: 0; }
+.fold-body { display: flow-root; }
+.fold-body > :first-child { margin-top: 0.4rem; }   /* the usual gap under the heading; as a margin (not padding)
+                                                       it disappears completely as the section closes */
 .fold-body > :last-child { margin-bottom: 0; }
 .fold > summary h2 { margin: 0; padding: 0; border: 0; }
 .fold-icon {

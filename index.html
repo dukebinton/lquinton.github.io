@@ -240,6 +240,7 @@
     summary.addEventListener('click', e => {
       if (reduceMotion) return;
       e.preventDefault();
+      if (!anim) wantOpen = fold.open;   // picks up sections opened another way (e.g. a header link)
       wantOpen = !wantOpen;
       const from = anim ? body.getBoundingClientRect().height : (wantOpen ? 0 : body.scrollHeight);
       if (anim) anim.cancel();
