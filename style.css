@@ -195,15 +195,25 @@ li { margin-bottom: 0.6rem; }
 .courses li { margin-bottom: 0.35rem; }
 .courses .where { color: var(--muted); font-size: 0.9rem; margin-left: 0.35rem; white-space: nowrap; }
 
-/* Photo in the About Me section, beside the text */
-.portrait {
-  float: right; width: 160px; height: auto;
-  margin: 0.4rem 0 0.75rem 1.5rem;
-  border-radius: 3px;
+/* About Me: the text in its own column with the photo beside it on the right,
+   so the text never runs underneath the photo */
+.about-me { display: flex; align-items: flex-start; gap: 1.5rem; }
+.about-text { flex: 1; min-width: 0; }
+.about-text > :first-child { margin-top: 0; }   /* text starts level with the top of the photo */
+.about-text > :last-child { margin-bottom: 0; }
+/* 248px wide makes the photo about as tall as the text, so their bottoms line up.
+   If the text gets longer or shorter, adjust this width to match. */
+.portrait { flex: none; width: 248px; height: auto; border-radius: 3px; }
+@media (max-width: 700px) {
+  .portrait { width: 180px; }   /* narrower windows: keep enough room for the text */
 }
-.portrait + p { margin-top: 0.4rem; }   /* text starts level with the top of the photo */
+.about-me picture { display: contents; }   /* the photo itself is the column, not its wrapper */
+.about-me source { display: none; }        /* otherwise it takes up an extra gap in the row */
+/* Phones: too narrow for two columns, so a square crop of the photo (luke-wide.jpg, chosen in
+   index.html) runs the full width of the text, above it */
 @media (max-width: 520px) {
-  .portrait { width: 110px; margin-left: 1rem; }
+  .about-me { flex-direction: column-reverse; align-items: stretch; gap: 1rem; }
+  .portrait { width: 100%; }
 }
 
 footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
