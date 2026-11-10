@@ -93,6 +93,14 @@ body {
   background: var(--bg);
 }
 
+/* Fade-in on load: the page stays hidden while the font loads (see the script in index.html),
+   then fades in. Visitors who prefer reduced motion see it appear without the fade. */
+body { transition: opacity 0.5s ease; }
+:root.fonts-loading body { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
+}
+
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
@@ -186,6 +194,17 @@ li { margin-bottom: 0.6rem; }
 .courses { list-style: none; padding: 0; margin: 0; }
 .courses li { margin-bottom: 0.35rem; }
 .courses .where { color: var(--muted); font-size: 0.9rem; margin-left: 0.35rem; white-space: nowrap; }
+
+/* Photo in the About Me section, beside the text */
+.portrait {
+  float: right; width: 160px; height: auto;
+  margin: 0.4rem 0 0.75rem 1.5rem;
+  border-radius: 3px;
+}
+.portrait + p { margin-top: 0.4rem; }   /* text starts level with the top of the photo */
+@media (max-width: 520px) {
+  .portrait { width: 110px; margin-left: 1rem; }
+}
 
 footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
 

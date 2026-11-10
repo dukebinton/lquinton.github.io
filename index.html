@@ -19,6 +19,8 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- Start downloading the main font right away, so the page can show sooner -->
+  <link rel="preload" href="fonts/crimson-pro-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
   <script>
     // Apply the saved theme before the page draws, so it doesn't flash light first
@@ -29,6 +31,19 @@
       if (saved === 'light' || saved === 'dark') theme = saved;
     } catch (e) {}
     if (theme !== 'light') document.documentElement.dataset.theme = theme;
+
+    // Keep the page invisible until Crimson Pro has loaded, then fade it in, so visitors don't
+    // see it flash in Georgia first. Gives up after 1.5 seconds, so a slow connection never
+    // leaves a blank page. (Without JavaScript, the page simply shows straight away.)
+    if (document.fonts && document.fonts.load) {
+      const root = document.documentElement;
+      const show = () => root.classList.remove('fonts-loading');
+      root.classList.add('fonts-loading');
+      Promise.race([
+        document.fonts.load('400 1em "Crimson Pro"'),
+        new Promise(resolve => setTimeout(resolve, 1500)),
+      ]).then(show, show);
+    }
   </script>
 </head>
 <body>
@@ -100,7 +115,8 @@
         <nav class="links">
           <a href="#research">Research</a> ·
           <a href="#talks">Talks</a> ·
-          <a href="#teaching">Teaching &amp; Service</a>
+          <a href="#teaching">Teaching &amp; Service</a> ·
+          <a href="#about-me">About Me</a>
         </nav>
       </div>
     </header>
@@ -110,8 +126,7 @@
         I'm a PhD student in the philosophy department at
         <a href="https://philosophy.rutgers.edu/">Rutgers (New Brunswick)</a>.
         My research interests are in the philosophy of mind and its intersections with
-        cognitive science, language, and social philosophy. I'm also a participant in <a href="https://www.talkpopc.org/about">talkPOPc</a>, 
-        which organizes public-facing events about topics in philosophy and aesthetics. 
+        cognitive science, language, and social philosophy.
       </p>
     </section>
   </div>
@@ -215,6 +230,32 @@
           Asia Baclay and Sean Sliger (alongside many others).
         </li>
       </ul>
+    </details>
+  </section>
+
+  <section id="about-me">
+    <details class="fold">
+      <summary><h2>About Me</h2><span class="fold-icon" aria-hidden="true"></span></summary>
+      <img class="portrait" src="images/luke.jpg" width="396" height="800" alt="Luke Quinton, smiling, standing in a green shirt outside a brick house">
+      <p>
+        Before coming to Rutgers, I graduated with an MA (2024) and BA (2022) in philosophy from
+        <a href="https://philosophy.sfsu.edu/">San Francisco State University</a>.
+        In a previous life, I studied audio engineering at the
+        <a href="https://www.mi.edu/">Musician's Institute</a>. I'm also a participant in
+        <a href="https://www.talkpopc.org/about">talkPOPc</a>, which organizes public-facing events
+        about topics in philosophy and aesthetics.
+      </p>
+      <p>
+        When I'm not thinking about thinking, I aim for a normal distribution
+        <a href="https://letterboxd.com/dukebinton/">on Letterboxd</a>, post music on
+        <a href="https://soundcloud.com/blcktsdy">my SoundCloud</a>, and try to keep a streak in
+        <a href="https://www.sports-reference.com/immaculate-grid/basketball/mens">the NBA immaculate grid</a>.
+        My favorite albums are Big Thief's
+        <a href="https://open.spotify.com/album/7Ln81p86r5cCsesd3KBWIY"><em>Dragon New Warm Mountain I Believe In You</em></a>
+        and Ryuichi Sakamoto's
+        <a href="https://open.spotify.com/album/6prGgcmP2UbZGkD4GeHf5F"><em>Playing the Piano</em></a>.
+        I'm a fan of the Boston Red Sox and (reluctantly) support Manchester United.
+      </p>
     </details>
   </section>
 
